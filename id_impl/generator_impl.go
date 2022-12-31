@@ -26,10 +26,11 @@ func NewService(machineID uint16) (id.IGeneratorId, error) {
 	}, nil
 }
 
-func (s *service) GenerateId() int64 {
+func (s *service) GenerateId() id.Uid {
 	uid, err := s.flake.NextID()
 	if err != nil {
 		panic(errors.Wrap(err, "fail generate id"))
 	}
-	return int64(uid)
+	// Сгенерированный id никогда не выйдет за пределы max int64
+	return id.Uid(int64(uid))
 }
