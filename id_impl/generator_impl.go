@@ -1,6 +1,7 @@
 package generator_id_impl
 
 import (
+	"fmt"
 	"github.com/kkiling/id"
 	"github.com/pkg/errors"
 	"github.com/sony/sonyflake"
@@ -19,14 +20,17 @@ func NewService(machineID uint16) (id.IGeneratorId, error) {
 		CheckMachineID: func(_ uint16) bool {
 			return true
 		},
-		StartTime: time.Unix(1703980800, 0),
+		StartTime: time.Unix(1672531200, 0),
 	})
+	if flake == nil {
+		return nil, fmt.Errorf("fail init sony flake")
+	}
 	return &service{
 		flake: flake,
 	}, nil
 }
 
-func (s *service) GenerateId() id.Uid {
+func (s *service) NextId() id.Uid {
 	uid, err := s.flake.NextID()
 	if err != nil {
 		panic(errors.Wrap(err, "fail generate id"))
