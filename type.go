@@ -24,7 +24,7 @@ func FromInt64(v int64) Uid {
 
 func FromString(s string) (Uid, error) {
 	n, err := strconv.ParseInt(s, 10, 64)
-	if err == nil {
+	if err != nil {
 		return -1, err
 	}
 	return Uid(n), nil
